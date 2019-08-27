@@ -1,0 +1,18 @@
+# danishstat
+# read in data from file 
+data <- read.table("household_power_consumption.txt", na.strings = "?",sep = ";",header = TRUE)
+
+# subset data - only observations between 2007-02-01 and 2007-02-02 are wanted
+data$Date <- as.Date(data$Date, "%d/%m/%Y")
+data <- subset(data, Date >= "2007-02-01" & Date <= "2007-02-02")
+
+# convert time column
+data$Time <- strptime(data$Time, format="%H:%M:%S")
+data[1:1440,"Time"] <- format(data[1:1440,"Time"],"2007-02-01 %H:%M:%S")
+data[1441:2880,"Time"] <- format(data[1441:2880,"Time"],"2007-02-02 %H:%M:%S")
+
+# create xy-plot
+png("plot2.png", width=480, height=480)
+plot(data$Time, (data$Global_active_power), type = "l", xlab = "",
+     ylab = "Global Active Power (kilowatts)", main = "")
+dev.off()
