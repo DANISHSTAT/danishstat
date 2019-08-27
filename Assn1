@@ -1,0 +1,53 @@
+
+R version 3.6.1 (2019-07-05) -- "Action of the Toes"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: i386-w64-mingw32/i386 (32-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+1.	makeCacheMatrix: This function creates a special “matrix” object that can cache its inverse.
+
+Answer:
+## A pair of functions that cache the inverse of a matrix.
+## This function creates a special "matrix" object that can cache its inverse.
+
+> makeCacheMatrix <- function(x = matrix()) {
++   inv <- NULL
++   set <- function(y){
++     x <<- y
++     inv <<- NULL
++   }
++   get <- function() x
++   setInverse <- function(solveMatrix) inv <<- solveMatrix
++   getInverse <- function() inv
++   list(set = set, get = get, setInverse = setInverse, getInverse = getInverse)
++ }
+> 2.	cacheSolve: This function computes the inverse of the special “matrix” returned by makeCacheMatrix above. If the inverse has already been calculated (and the matrix has not changed), then the cachesolve should retrieve the inverse from the cache. Computing the inverse of a square matrix can be done with the solve function in R. For example, if X is a square invertible matrix, then solve(X) returns its inverse.
+Answer:
+## This function computes the inverse of the special "matrix" returned by makeCacheMatrix above.
+
+> cacheSolve <- function(x, ...) {
++   ## Return a matrix that is the inverse of 'x'
++   inv <- x$getInverse()
++   if(!is.null(inv)){
++     message("getting cached data")
++     return(inv)
++   }
++   data <- x$get()
++   inv <- solve(data)
++   x$setInverse(inv)
++   inv      
++ }
+> save.image("C:\\Users\\Danish\\Desktop\\Assign 1")
+> 
